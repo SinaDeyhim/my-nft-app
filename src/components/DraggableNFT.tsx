@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./DropZone";
 import { NFT } from "@/clients/stargaze";
 import { useNFTPositionContext } from "@/providers/NFTProvider";
+import Image from "next/image";
 
 interface DraggableNFTProps {
   nft: NFT;
@@ -39,9 +40,12 @@ const DraggableNFT: React.FC<DraggableNFTProps> = ({ nft }) => {
         height: "100px", // Set default height
       }}
     >
-      <img
+      <Image
         src={nft.media.url}
-        style={{ width: "100%", height: "100%", borderRadius: 4 }}
+        alt={nft.id}
+        width={100}
+        height={120}
+        style={{ borderRadius: 4 }}
       />
       <button
         onClick={handleDelete}
