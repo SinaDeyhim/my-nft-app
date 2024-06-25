@@ -34,8 +34,6 @@ const Home = () => {
     // Trigger the query to fetch NFTs
   };
 
-  const { positions, setPosition } = useNFTPositionContext();
-
   return (
     <Layout>
       <div className="p-4">

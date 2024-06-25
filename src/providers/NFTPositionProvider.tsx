@@ -1,9 +1,9 @@
 import React, {
+  ReactNode,
   createContext,
   useContext,
-  useState,
   useEffect,
-  ReactNode,
+  useState,
 } from "react";
 import { NFT } from "@/clients/stargaze";
 
@@ -15,6 +15,7 @@ interface NFTPosition {
 interface NFTPositionContextType {
   positions: { [key: string]: NFTPosition };
   setPosition: (id: string, left: number, top: number) => void;
+  deleteNFT: (id: string) => void;
 }
 
 const NFTPositionContext = createContext<NFTPositionContextType | undefined>(
@@ -31,31 +32,28 @@ export const useNFTPositionContext = () => {
   return context;
 };
 
-interface NFTPositionProviderProps {
+export const NFTPositionProvider: React.FC<{
   nfts: NFT[];
   children: ReactNode;
-}
-
-export const NFTPositionProvider: React.FC<NFTPositionProviderProps> = ({
-  nfts,
-  children,
-}) => {
+}> = ({ nfts, children }: { nfts: NFT[]; children: ReactNode }) => {
   const [positions, setPositions] = useState<{ [key: string]: NFTPosition }>(
-    {}
+    () => {
+      return nfts.reduce((acc, nft, index) => {
+        acc[nft.id] = { left: index * 120, top: 0 }; // Initial positions
+        return acc;
+      }, {});
+    }
   );
 
   useEffect(() => {
-    setPositions((prevPositions) => {
-      const newPositions = nfts?.reduce((acc, nft, index) => {
-        if (!prevPositions[nft.id]) {
-          acc[nft.id] = { left: index * 120, top: 0 }; // Assuming 120px width for each NFT
-        } else {
-          acc[nft.id] = prevPositions[nft.id];
-        }
+    // Initialize positions when initialNFTs change
+    if (nfts && nfts.length > 0) {
+      const initialPositions = nfts.reduce((acc, nft, index) => {
+        acc[nft.id] = { left: index * 120, top: 0 }; // Assuming 120px width for each NFT
         return acc;
       }, {});
-      return newPositions;
-    });
+      setPositions(initialPositions);
+    }
   }, [nfts]);
 
   const setPosition = (id: string, left: number, top: number) => {
@@ -65,8 +63,15 @@ export const NFTPositionProvider: React.FC<NFTPositionProviderProps> = ({
     }));
   };
 
+  const deleteNFT = (id: string) => {
+    setPositions((prevPositions) => {
+      const { [id]: deletedNFT, ...rest } = prevPositions;
+      return rest;
+    });
+  };
+
   return (
-    <NFTPositionContext.Provider value={{ positions, setPosition }}>
+    <NFTPositionContext.Provider value={{ positions, setPosition, deleteNFT }}>
       {children}
     </NFTPositionContext.Provider>
   );
