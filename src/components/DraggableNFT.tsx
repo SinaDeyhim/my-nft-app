@@ -42,7 +42,7 @@ const DraggableNFT: React.FC<DraggableNFTProps> = ({ nft }) => {
       <img src={nft.media.url} style={{ width: "100%", height: "100%" }} />
       <button
         onClick={handleDelete}
-        style={{ position: "absolute", top: 0, right: 0 }}
+        style={{ position: "absolute", top: 0, right: 3, fontSize: 12 }}
       >
         X
       </button>
