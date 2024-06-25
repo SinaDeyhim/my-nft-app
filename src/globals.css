@@ -16,13 +16,8 @@
   }
 }
 
-/* Custom styles */
 body {
-  @apply bg-background-light text-text-light transition-colors;
-}
-
-.dark body {
-  @apply bg-background-dark text-text-dark transition-colors;
+  @apply bg-background text-text transition-colors;
 }
 
 @layer utilities {
