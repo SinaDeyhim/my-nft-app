@@ -8,18 +8,21 @@ import DropZone from "@/components/DropZone";
 import DraggableNFT from "@/components/DraggableNFT";
 
 import { NFTProvider } from "@/providers/NFTProvider";
+import { useWallet } from "@/components/WalletProvider";
 
 const Home = () => {
-  const [address, setAddress] = useState("");
   const [limit, setLimit] = useState(10);
   const [error, setError] = useState(false);
   const [nfts, setNfts] = useState<NFT[]>([]);
+  const { walletAddress, connectWallet } = useWallet();
+
+  console.log(">>>> walletAddress", walletAddress);
 
   const { isLoading } = useQuery(
-    ["nfts", address, limit],
-    () => fetchNFTs(address, limit),
+    ["nfts", walletAddress, limit],
+    () => fetchNFTs(walletAddress, limit),
     {
-      enabled: !!address,
+      enabled: !!walletAddress,
       onSuccess: (data) => {
         setNfts(data);
       },
@@ -38,8 +41,8 @@ const Home = () => {
               Wallet Address:
               <input
                 type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                value={walletAddress}
+                onChange={(e) => connectWallet(e.target.value)}
                 className="block w-[400px] mt-1 p-2 border border-gray-300 rounded"
               />
             </label>

@@ -2,7 +2,7 @@
 
 import { CloudArrowUpIcon, PhotoIcon } from "@heroicons/react/16/solid";
 import { ReactNode, useState } from "react";
-import ConnectWalletComponent from "./ConnectWallet";
+import ConnectWalletComponent from "./ConnectWalletComponent";
 
 interface LayoutProps {
   children: ReactNode;
