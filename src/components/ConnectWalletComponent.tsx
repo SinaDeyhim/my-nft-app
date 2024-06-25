@@ -9,11 +9,10 @@ declare global {
 }
 
 const ConnectWalletComponent = () => {
-  const [walletConnected, setWalletConnected] = useState(false);
-  const { walletAddress, connectWallet } = useWallet();
+  const { walletAddress, connectWallet, connected, setWalletConnected } =
+    useWallet();
 
   const initializeKeplr = useCallback(async () => {
-    console.log(">>>> init");
     const chainId = "cosmoshub-4";
     // Check if Keplr is installed
     if (!window.keplr) {
@@ -33,10 +32,10 @@ const ConnectWalletComponent = () => {
       }
       // Example: const cosmJS = new SigningCosmosClient("https://lcd-cosmoshub.keplr.app", accounts[0].address, offlineSigner);
     } catch (error) {
+      setWalletConnected(false);
       console.error("Failed to enable Keplr:", error);
-      alert("Failed to enable Keplr. Check console for details.");
     }
-  }, [connectWallet]);
+  }, [connectWallet, setWalletConnected]);
 
   const disconnectWallet = () => {
     connectWallet(""); // Clear the wallet address
@@ -49,7 +48,7 @@ const ConnectWalletComponent = () => {
 
   return (
     <div className="flex justify-end m-4">
-      {!walletConnected ? (
+      {!connected ? (
         <button
           onClick={initializeKeplr}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-[180px]"

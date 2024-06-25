@@ -3,13 +3,17 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 // Define types for context value
 interface WalletContextType {
   walletAddress: string;
+  connected: boolean;
   connectWallet: (address: string) => void;
+  setWalletConnected: (connected: boolean) => void;
 }
 
 // Create context with initial empty values
 const initialContext: WalletContextType = {
   walletAddress: "",
+  connected: false,
   connectWallet: () => {},
+  setWalletConnected: () => {},
 };
 
 // Create context
@@ -22,17 +26,25 @@ export const useWallet = (): WalletContextType => {
 
 // Wallet provider component
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const [walletAddress, setWalletAddress] = useState<string>(""); // Initially no wallet connected
+  const [walletAddress, setWalletAddress] = useState<string>("");
+  const [connected, setConnected] = useState(false);
 
   // Function to set wallet address
   const connectWallet = (address: string): void => {
     setWalletAddress(address);
   };
 
+  // Function to set wallet address
+  const setWalletConnected = (connected: boolean): void => {
+    setConnected(connected);
+  };
+
   // Context value
   const value: WalletContextType = {
     walletAddress,
     connectWallet,
+    connected,
+    setWalletConnected,
   };
 
   return (

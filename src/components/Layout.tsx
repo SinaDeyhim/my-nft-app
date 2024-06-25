@@ -48,11 +48,6 @@ const Layout = ({ children }: LayoutProps) => {
         <ConnectWalletComponent />
       </header>
       <main className="flex-grow container mx-2">{children}</main>
-      <footer className="p-4 bg-primary-light dark:bg-primary-dark text-white">
-        <div className="container mx-auto text-center">
-          &copy; {new Date().getFullYear()} NFT Display App
-        </div>
-      </footer>
     </div>
   );
 };

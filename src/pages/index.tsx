@@ -14,10 +14,8 @@ const Home = () => {
   const [limit, setLimit] = useState(10);
   const [error, setError] = useState(false);
   const [nfts, setNfts] = useState<NFT[]>([]);
-  const { walletAddress, connectWallet } = useWallet();
-
-  console.log(">>>> walletAddress", walletAddress);
-
+  const { walletAddress, connectWallet, connected } = useWallet();
+  console.log(">>> connected", connected);
   const { isLoading } = useQuery(
     ["nfts", walletAddress, limit],
     () => fetchNFTs(walletAddress, limit),
@@ -35,12 +33,13 @@ const Home = () => {
   return (
     <Layout>
       <div className="p-4">
-        <form className="mb-4">
-          <div className="flex flex-row flex-grow">
+        <form className="mb-4 flex flex-row justify-start">
+          <div className="flex flex-row">
             <label className="block mb-2 mr-4">
               Wallet Address:
               <input
                 type="text"
+                disabled={connected}
                 value={walletAddress}
                 onChange={(e) => connectWallet(e.target.value)}
                 className="block w-[400px] mt-1 p-2 border border-gray-300 rounded"
@@ -52,13 +51,14 @@ const Home = () => {
                 type="number"
                 value={limit}
                 onChange={(e) => setLimit(parseInt(e.target.value || "10"))}
-                className="block  mt-1 p-2 border border-gray-300 rounded w-[60px]"
+                className="block mt-1 p-2 border border-gray-300 rounded w-[60px]"
               />
             </label>
           </div>
+          <div className="flex flex-row items-center ml-8 mt-4">
+            {isLoading && !error && <div>Loading...</div>}
+          </div>
         </form>
-
-        {isLoading && !error && <div>Loading...</div>}
         {!!error && <div> Something went wrong</div>}
         {nfts && (
           <NFTProvider nfts={nfts}>
