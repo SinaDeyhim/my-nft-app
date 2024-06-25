@@ -41,6 +41,7 @@ const DropZone: React.FC<DropZoneProps> = ({ children }) => {
     <div
       ref={(node) => {
         drop(node);
+        //@ts-ignore
         dropZoneRef.current = node;
       }}
       style={{

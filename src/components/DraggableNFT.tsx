@@ -28,6 +28,7 @@ const DraggableNFT: React.FC<DraggableNFTProps> = ({ nft }) => {
 
   return (
     <div
+      //@ts-ignore
       ref={drag}
       style={{
         position: "absolute",

@@ -11,11 +11,12 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const [backgroundImage, setBackgroundImage] = useState("");
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        //@ts-ignore
         setBackgroundImage(reader.result);
       };
       reader.readAsDataURL(file);
