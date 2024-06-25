@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
@@ -6,7 +6,8 @@ import { fetchNFTs, NFT } from "../clients/stargaze";
 import { HydrateWrapper } from "../clients/ReactQueryClient";
 import DropZone from "@/components/DropZone";
 import DraggableNFT from "@/components/DraggableNFT";
-import { NFTPositionProvider } from "@/providers/NFTPositionProvider";
+
+import { NFTProvider } from "@/providers/NFTProvider";
 
 const Home = () => {
   const [address, setAddress] = useState("");
@@ -54,16 +55,16 @@ const Home = () => {
           </div>
         </form>
 
-        {isLoading && <div>Loading...</div>}
+        {isLoading && !error && <div>Loading...</div>}
         {!!error && <div> Something went wrong</div>}
         {nfts && (
-          <NFTPositionProvider nfts={nfts}>
+          <NFTProvider nfts={nfts}>
             <DropZone>
               {nfts.map((nft) => (
                 <DraggableNFT key={nft.id} nft={nft} />
               ))}
             </DropZone>
-          </NFTPositionProvider>
+          </NFTProvider>
         )}
       </div>
     </Layout>
@@ -88,9 +89,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
 export default function Page(props: any) {
   return (
     <HydrateWrapper dehydratedState={props.dehydratedState}>
-      <NFTPositionProvider nfts={[]}>
+      <NFTProvider nfts={[]}>
         <Home />
-      </NFTPositionProvider>
+      </NFTProvider>
     </HydrateWrapper>
   );
 }

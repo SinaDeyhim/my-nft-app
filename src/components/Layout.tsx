@@ -2,6 +2,7 @@
 
 import { CloudArrowUpIcon, PhotoIcon } from "@heroicons/react/16/solid";
 import { ReactNode, useState } from "react";
+import ConnectWalletComponent from "./ConnectWallet";
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,17 +24,17 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div
       style={{ backgroundImage: `url(${backgroundImage})` }}
-      className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300"
+      className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300 mx-2"
     >
-      <header className="p-4 bg-primary-light dark:bg-primary-dark text-white">
+      <header className="p-4 bg-primary-light dark:bg-primary-dark text-white flex flexp-row">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">NFT Display App</h1>
-          <div className="mt-4">
+          <div>
             <label
-              className="inline-block rounded-full  text-white p-2 cursor-pointer transition-colors duration-300 hover:bg-slate-500"
+              className="flex flex-row rounded-full  text-white p-2 cursor-pointer transition-colors duration-300 hover:bg-slate-500"
               htmlFor="backgroundImageInput"
             >
-              <PhotoIcon className="w-6 h-6" />
+              Background
+              <PhotoIcon className="ml-4 w-6 h-6" />
             </label>
             <input
               id="backgroundImageInput"
@@ -44,8 +45,9 @@ const Layout = ({ children }: LayoutProps) => {
             />
           </div>
         </div>
+        <ConnectWalletComponent />
       </header>
-      <main className="flex-grow container mx-auto p-4">{children}</main>
+      <main className="flex-grow container mx-2">{children}</main>
       <footer className="p-4 bg-primary-light dark:bg-primary-dark text-white">
         <div className="container mx-auto text-center">
           &copy; {new Date().getFullYear()} NFT Display App

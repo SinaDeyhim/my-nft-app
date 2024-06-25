@@ -1,6 +1,6 @@
 import React, { ReactNode, useRef } from "react";
 import { useDrop } from "react-dnd";
-import { useNFTPositionContext } from "@/providers/NFTPositionProvider";
+import { useNFTPositionContext } from "@/providers/NFTProvider";
 
 interface DropZoneProps {
   children: ReactNode;

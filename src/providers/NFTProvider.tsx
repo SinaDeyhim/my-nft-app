@@ -25,14 +25,12 @@ const NFTPositionContext = createContext<NFTPositionContextType | undefined>(
 export const useNFTPositionContext = () => {
   const context = useContext(NFTPositionContext);
   if (!context) {
-    throw new Error(
-      "useNFTPositionContext must be used within a NFTPositionProvider"
-    );
+    throw new Error("useNFTPositionContext must be used within a NFTProvider");
   }
   return context;
 };
 
-export const NFTPositionProvider: React.FC<{
+export const NFTProvider: React.FC<{
   nfts: NFT[];
   children: ReactNode;
 }> = ({ nfts, children }: { nfts: NFT[]; children: ReactNode }) => {

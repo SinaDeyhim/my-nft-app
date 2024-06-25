@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./DropZone";
 import { NFT } from "@/clients/stargaze";
-import { useNFTPositionContext } from "@/providers/NFTPositionProvider";
+import { useNFTPositionContext } from "@/providers/NFTProvider";
 
 interface DraggableNFTProps {
   nft: NFT;
