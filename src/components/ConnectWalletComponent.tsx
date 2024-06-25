@@ -1,10 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Window as KeplrWindow } from "@keplr-wallet/types";
+import { AccountData, Window as KeplrWindow } from "@keplr-wallet/types";
 import { useWallet } from "./WalletProvider";
 
 declare global {
   interface Window extends KeplrWindow {}
+}
+
+function findStargazeAddress(
+  accounts: readonly AccountData[]
+): string | undefined {
+  // Iterate through each address in the accounts array
+  for (const account of accounts) {
+    // Check if the address starts with 'star'
+    if (account.address.startsWith("star")) {
+      return account.address; // Return the address if found
+    }
+  }
+  return undefined; // Return undefined if no address starts with 'star'
 }
 
 const ConnectWalletComponent = () => {
@@ -12,7 +25,7 @@ const ConnectWalletComponent = () => {
     useWallet();
 
   const initializeKeplr = useCallback(async () => {
-    const chainId = "cosmoshub-4";
+    const chainId = "stargaze-1";
     // Check if Keplr is installed
     if (!window.keplr) {
       alert("Please install Keplr extension");
@@ -25,11 +38,14 @@ const ConnectWalletComponent = () => {
       const offlineSigner = window.keplr.getOfflineSigner(chainId);
       // Perform further actions with offlineSigner if needed
       const accounts = await offlineSigner.getAccounts();
-      if (accounts?.length) {
+      const stargazeAddress = findStargazeAddress(accounts);
+      if (stargazeAddress) {
         setWalletConnected(true);
-        connectWallet(accounts[0].address);
+        connectWallet(stargazeAddress);
+      } else {
+        alert("No stargaze address found. Please type your address manually");
+        setWalletConnected(false);
       }
-      // Example: const cosmJS = new SigningCosmosClient("https://lcd-cosmoshub.keplr.app", accounts[0].address, offlineSigner);
     } catch (error) {
       setWalletConnected(false);
       console.error("Failed to enable Keplr:", error);
